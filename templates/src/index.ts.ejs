@@ -1,0 +1,27 @@
+<% if (database === 'MongoDB') { %>
+import { connectToMongo } from '@/libs/mongo'
+<% } %>
+import { authController } from '@/controllers/authController'
+import prisma from '@/libs/prisma'
+import { cors } from '@elysiajs/cors'
+import { env } from 'bun'
+import { Elysia } from 'elysia'
+
+const PORT = env.PORT
+
+<% if (database === 'MongoDB') { %>
+connectToMongo()
+<% } %>
+
+if (!PORT) {
+  console.error('❌ Please provide a PORT in .env file')
+  process.exit(1)
+}
+
+const app = new Elysia()
+  .use(cors())
+  .get('/', () => 'Hello Mishu')
+  .use(authController)
+  .listen(PORT)
+
+console.log(`🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`)

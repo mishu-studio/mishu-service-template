@@ -1,0 +1,19 @@
+{
+  "name": "mishu-service-template",
+  "description": "Backend template service by Mishu-Studio",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "mishu-service": "./index.js"
+  },
+  "author": {
+    "name": "Harith Iqbal",
+    "email": "hrithiqball@gmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "inquirer": "^10.1.8"
+  }
+}
