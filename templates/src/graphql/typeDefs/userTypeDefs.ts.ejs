@@ -1,0 +1,13 @@
+export const userTypeDefs = /* GraphQL */ `
+  type User {
+    id: Int
+    name: String
+    email: String
+    passwordHash: String
+  }
+
+  type Query {
+    users: [User]
+    user(id: Int!): User
+  }
+`

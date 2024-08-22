@@ -1,0 +1,6 @@
+import { userTypeDefs } from './typeDefs/userTypeDefs'
+import { userResolvers } from './resolvers/userResolvers'
+import { mergeResolvers } from '@graphql-tools/merge'
+
+export const resolvers = mergeResolvers([userResolvers])
+export const typeDefs = [userTypeDefs]

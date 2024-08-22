@@ -19,7 +19,7 @@ export const authController = (app: Elysia) => {
       const { email, password, name } = parsed.data
       const passwordHash = await argon2.hash(password)
 
-      const result = await prisma.user.create({
+      const result = await prisma.users.create({
         data: {
           email,
           passwordHash,
@@ -36,7 +36,7 @@ export const authController = (app: Elysia) => {
         }
 
         const { email, password } = parsed.data
-        const user = await prisma.user.findFirst({ where: { email } })
+        const user = await prisma.users.findFirst({ where: { email } })
 
         if (!user || !(await argon2.verify(user.passwordHash, password))) {
           return { success: false, message: 'Invalid email or password' }
@@ -47,7 +47,7 @@ export const authController = (app: Elysia) => {
           .setExpirationTime('2h')
           .sign(SECRET_KEY)
 
-        await prisma.session.create({
+        await prisma.sessions.create({
           data: {
             userId: user.id,
             token,
@@ -63,7 +63,7 @@ export const authController = (app: Elysia) => {
           return { success: false, message: 'Invalid token' }
         }
 
-        await prisma.session.delete({ where: { token } })
+        await prisma.sessions.delete({ where: { token } })
       })
     )
 

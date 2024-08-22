@@ -2,10 +2,10 @@
   "name": "@mishu-studio/service-template",
   "description": "Backend template service by Mishu-Studio",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "cli.js",
   "type": "module",
   "bin": {
-    "mishu-service": "./index.js"
+    "mishu-service": "./cli.js"
   },
   "author": {
     "name": "Harith Iqbal",
@@ -13,7 +13,10 @@
   },
   "license": "MIT",
   "dependencies": {
+    "chalk": "^5.3.0",
     "ejs": "^3.1.10",
-    "inquirer": "^10.1.8"
+    "figlet": "^1.7.0",
+    "inquirer": "^10.1.8",
+    "ora": "^8.0.1"
   }
 }

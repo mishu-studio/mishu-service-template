@@ -1,17 +1,24 @@
-<% if (database === 'MongoDB') { %>
-import { connectToMongo } from '@/libs/mongo'
-<% } %>
-import { authController } from '@/controllers/authController'
-import prisma from '@/libs/prisma'
 import { cors } from '@elysiajs/cors'
+import { authController } from '@/controllers/authController'
+<% if (features.includes('GraphQL')) { -%>
+import yoga from '@elysiajs/yoga'
+import { resolvers, typeDefs } from '@/graphql'
+<% } -%>
+<% if (database === 'MongoDB') { -%>
+import { connectToMongo } from '@/libs/mongo'
+<% } -%>
+<% if (features.includes('GraphQL')) { -%>
+import prisma from '@/libs/prisma'
+import { graphqlAuthMiddleware } from '@/middleware/auth'
+<% } -%>
 import { env } from 'bun'
 import { Elysia } from 'elysia'
 
 const PORT = env.PORT
+<% if (database === 'MongoDB') { -%>
 
-<% if (database === 'MongoDB') { %>
 connectToMongo()
-<% } %>
+<% } -%>
 
 if (!PORT) {
   console.error('❌ Please provide a PORT in .env file')
@@ -21,6 +28,18 @@ if (!PORT) {
 const app = new Elysia()
   .use(cors())
   .get('/', () => 'Hello Mishu')
+  <% if (features.includes('GraphQL')) { -%>
+  .use(
+    yoga({
+      typeDefs,
+      context: async ({ request }) => {
+        const user = await graphqlAuthMiddleware(request)
+        return { prisma, request, user }
+      },
+      resolvers
+    })
+  )
+  <% } -%>
   .use(authController)
   .listen(PORT)
 

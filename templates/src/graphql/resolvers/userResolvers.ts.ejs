@@ -1,0 +1,24 @@
+import { Context } from '@/types/context'
+
+export const userResolvers = {
+  Query: {
+    user: async (_parent: any, args: { id: number }, context: Context) => {
+      if (!context.user || context.user.id !== args.id) {
+        throw new Error('Not allowed')
+      }
+
+      return context.prisma.users.findFirst({
+        where: {
+          id: args.id
+        }
+      })
+    },
+
+    users: async (_parent: any, _args: any, context: Context) => {
+      if (!context.user) {
+        throw new Error('Not authorized')
+      }
+      return context.prisma.users.findMany()
+    }
+  }
+}
