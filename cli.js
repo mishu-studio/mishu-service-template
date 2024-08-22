@@ -1,25 +1,30 @@
 #!/usr/bin/env node
 
 import chalk from 'chalk'
-
-import { generateFiles } from './lib/generateFiles.js'
-import { getDependencies } from './lib/getDependancies.js'
-import { installDependencies } from './lib/installDependencies.js'
-import { printBanner } from './lib/printBanner.js'
-import { promptGitInit } from './lib/promptGitInit.js'
-import { propmptUser } from './lib/promptUser.js'
+import { initProject } from './lib/initProject.js'
+import { generateCrud } from './lib/generateCrud.js'
 
 async function run() {
-  printBanner()
+  const args = process.argv.slice(2)
 
-  const answers = await propmptUser()
-  const { baseDependencies, devDependencies } = getDependencies(answers)
+  if (args.length === 0) {
+    await initProject()
+  } else {
+    const command = args[0]
 
-  generateFiles(answers)
-  installDependencies(baseDependencies, devDependencies, answers)
-  await promptGitInit(answers)
+    switch (command) {
+      case 'gen':
+        if (!args[1]) {
+          console.log(chalk.red('Please provide a component name'))
+          return
+        }
 
-  console.log(chalk.magentaBright('🚀 Project setup completed! Have fun coding! 👾'))
+        await generateCrud(args[1])
+        break
+      default:
+        break
+    }
+  }
 }
 
 run()
