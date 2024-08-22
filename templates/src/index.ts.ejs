@@ -1,7 +1,7 @@
 import { cors } from '@elysiajs/cors'
 import { authController } from '@/controllers/authController'
 <% if (features.includes('GraphQL')) { -%>
-import yoga from '@elysiajs/yoga'
+import yoga from '@elysiajs/graphql-yoga'
 import { resolvers, typeDefs } from '@/graphql'
 <% } -%>
 <% if (database === 'MongoDB') { -%>

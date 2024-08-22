@@ -16,8 +16,8 @@ async function run() {
   const { baseDependencies, devDependencies } = getDependencies(answers)
 
   generateFiles(answers)
-  installDependencies(baseDependencies, devDependencies)
-  await promptGitInit()
+  installDependencies(baseDependencies, devDependencies, answers)
+  await promptGitInit(answers)
 
   console.log(chalk.magentaBright('🚀 Project setup completed! Have fun coding! 👾'))
 }
